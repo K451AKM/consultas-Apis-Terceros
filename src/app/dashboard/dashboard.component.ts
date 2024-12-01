@@ -121,14 +121,9 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.currentUser = this.authService.getCurrentUser();
     if (!this.currentUser) {
+      // Redirect to login if no user is logged in
       this.router.navigate(['/login']);
     }
-  }
-
-  getUserInitial(): string {
-    return this.currentUser && this.currentUser.name 
-      ? this.currentUser.name.charAt(0).toUpperCase() 
-      : 'U';
   }
 
   toggleMenu() {
@@ -136,17 +131,21 @@ export class DashboardComponent implements OnInit {
   }
 
   toggleUsersTable() {
-    this.showUsersTable = true;
+    this.showUsersTable = !this.showUsersTable;
     this.showRickAndMortyTable = false;
   }
 
   toggleRickAndMortyTable() {
-    this.showRickAndMortyTable = true;
+    this.showRickAndMortyTable = !this.showRickAndMortyTable;
     this.showUsersTable = false;
   }
 
   onLogout() {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  getUserInitial(): string {
+    return this.currentUser?.name.charAt(0).toUpperCase() || 'U';
   }
 }
