@@ -1,0 +1,135 @@
+<div class="container">
+  <div class="table-header">
+    <h2>Personajes de Rick and Morty</h2>
+    <div class="search-container">
+      <input 
+        type="text" 
+        [ngModel]="searchTerm" 
+        (ngModelChange)="onSearch($event)"
+        placeholder="Buscar por nombre" 
+        class="search-input"
+      >
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th (click)="sort('id')" class="sortable">
+            ID 
+            <span class="sort-icon" *ngIf="sortColumn === 'id'">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
+          </th>
+          <th (click)="sort('name')" class="sortable">
+            Nombre
+            <span class="sort-icon" *ngIf="sortColumn === 'name'">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
+          </th>
+          <th>Foto</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (character of displayedCharacters; track character.id) {
+          <tr>
+            <td>{{ character.id }}</td>
+            <td>{{ character.name }}</td>
+            <td>
+              <div class="character-image">
+                <img [src]="character.image" [alt]="character.name">
+              </div>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-view" title="Ver" (click)="viewCharacter(character)">
+                  <i class="fas fa-eye"></i>
+                  Ver
+                </button>
+                <button class="btn btn-edit" title="Editar"
+                        (click)="editCharacter(character)">
+                  <i class="fas fa-pencil-alt"></i>
+                  Editar
+                </button>
+                <button class="btn btn-delete" title="Eliminar"
+                        (click)="deleteCharacter(character)">
+                  <i class="fas fa-trash"></i>
+                  Eliminar
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <span class="pagination-info">
+      Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }} - {{ getMaxDisplayedIndex() }} de {{ totalCharacters }} personajes
+    </span>
+    <div class="pagination-buttons">
+      <button 
+        (click)="goToPage(1)" 
+        [disabled]="currentPage === 1"
+        class="btn btn-pagination"
+        [class.disabled]="currentPage === 1"
+      >
+        Primera
+      </button>
+      <button 
+        (click)="changePage(-1)" 
+        [disabled]="currentPage === 1"
+        class="btn btn-pagination"
+        [class.disabled]="currentPage === 1"
+      >
+        Anterior
+      </button>
+      @for (page of visiblePages; track page) {
+        <button 
+          (click)="goToPage(page)"
+          class="btn btn-pagination"
+          [class.active]="currentPage === page"
+        >
+          {{ page }}
+        </button>
+      }
+      <button 
+        (click)="changePage(1)" 
+        [disabled]="!hasNextPage"
+        class="btn btn-pagination"
+        [class.disabled]="!hasNextPage"
+      >
+        Siguiente
+      </button>
+      <button 
+        (click)="goToPage(totalPages)" 
+        [disabled]="currentPage === totalPages"
+        class="btn btn-pagination"
+        [class.disabled]="currentPage === totalPages"
+      >
+        Última
+      </button>
+    </div>
+  </div>
+
+  <button class="btn btn-reset" (click)="resetChanges()">Resetear Cambios</button>
+
+  @if (selectedCharacter) {
+    <app-character-viewer 
+      [character]="selectedCharacter"
+      (closeViewer)="closeViewer()">
+    </app-character-viewer>
+  }
+
+  @if (editingCharacter) {
+    <app-character-editor
+      [character]="editingCharacter"
+      (closeEditor)="closeEditor()"
+      (saveCharacter)="saveCharacter($event)">
+    </app-character-editor>
+  }
+</div>
+

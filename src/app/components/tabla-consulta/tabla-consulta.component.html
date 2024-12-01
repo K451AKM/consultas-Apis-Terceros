@@ -1,0 +1,23 @@
+<!-- src/app/components/tabla-consulta/tabla-consulta.component.html -->
+<table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Rol</th>
+        <th>Avatar</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (user of users; track user.id) {
+        <tr>
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role }}</td>
+          <td><img [src]="user.avatar" alt="{{ user.name }}" width="50"></td>
+        </tr>
+      }
+    </tbody>
+  </table>

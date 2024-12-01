@@ -1,0 +1,57 @@
+<div class="modal-overlay" *ngIf="character" (click)="onOverlayClick($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>{{ character.name }}</h2>
+        <button class="close-btn" (click)="close()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="character-main-info">
+          <div class="character-image">
+            <img [src]="character.image" [alt]="character.name">
+          </div>
+          <div class="character-details">
+            <div class="info-row">
+              <span class="info-label">Estado:</span>
+              <span class="info-value">{{ character.status }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Especie:</span>
+              <span class="info-value">{{ character.species }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Tipo:</span>
+              <span class="info-value">{{ character.type || 'N/A' }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Género:</span>
+              <span class="info-value">{{ character.gender }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Origen:</span>
+              <span class="info-value">{{ character.origin.name }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Ubicación:</span>
+              <span class="info-value">{{ character.location.name }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="character-episodes">
+          <h3>Episodios:</h3>
+          <div class="episodes-list">
+            <div class="episode-item" *ngFor="let episode of episodes">
+              <span class="episode-code">{{ episode.episode }}</span>
+              <span class="episode-name">{{ episode.name }}</span>
+              <span class="episode-date">{{ episode.air_date }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="close-btn-bottom" (click)="close()">
+          Cerrar
+          <span class="close-icon">×</span>
+        </button>
+      </div>
+    </div>
+  </div>
